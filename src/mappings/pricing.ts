@@ -5,14 +5,14 @@ import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD } from './helpers'
 
 const WBNB_ADDRESS = '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c'
 const BUSD_WBNB_PAIR = '0x1b96b92314c44b159149f7e0303511fb2fc4774f' // created block 589414
-const DAI_WBNB_PAIR = '0xf3010261b58b2874639ca2e860e9005e3be5de0b'  // created block 481116
+const DAI_WBNB_PAIR = '0x56C77d59E82f33c712f919D09FcedDf49660a829' // created block 481116
 const USDT_WBNB_PAIR = '0x20bcc3b8a0091ddac2d0bc30f68e6cbb97de59cd' // created block 648115
 
 export function getEthPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
   let usdtPair = Pair.load(USDT_WBNB_PAIR) // usdt is token0
   let busdPair = Pair.load(BUSD_WBNB_PAIR) // busd is token1
-  let daiPair = Pair.load(DAI_WBNB_PAIR)   // dai is token0
+  let daiPair = Pair.load(DAI_WBNB_PAIR) // dai is token0
 
   // all 3 have been created
   if (daiPair !== null && busdPair !== null && usdtPair !== null) {
@@ -101,10 +101,7 @@ export function getTrackedVolumeUSD(
 
   // both are whitelist tokens, take average of both amounts
   if (WHITELIST.includes(token0.id) && WHITELIST.includes(token1.id)) {
-    return tokenAmount0
-      .times(price0)
-      .plus(tokenAmount1.times(price1))
-      .div(BigDecimal.fromString('2'))
+    return tokenAmount0.times(price0).plus(tokenAmount1.times(price1)).div(BigDecimal.fromString('2'))
   }
 
   // take full value of the whitelisted token amount
