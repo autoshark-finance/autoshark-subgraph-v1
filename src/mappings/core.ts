@@ -238,10 +238,15 @@ export function handleSync(event: Sync): void {
   bundle.ethPrice = getEthPriceInUSD()
   bundle.save()
 
-  token0.derivedETH = findEthPerToken(token0 as Token)
-  token1.derivedETH = findEthPerToken(token1 as Token)
-  token0.save()
-  token1.save()
+  let t0DerivedBNB = findEthPerToken(token0 as Token);
+  token0.derivedETH = t0DerivedBNB;
+  token0.derivedUSD = t0DerivedBNB.times(bundle.ethPrice);
+  token0.save();
+
+  let t1DerivedBNB = findEthPerToken(token1 as Token);
+  token1.derivedETH = t1DerivedBNB;
+  token1.derivedUSD = t1DerivedBNB.times(bundle.ethPrice);
+  token1.save();
 
   // get tracked liquidity - will be 0 if neither is in whitelist
   let trackedLiquidityETH: BigDecimal
